@@ -88,7 +88,7 @@ class SQL_object(SQL_abstract):
         return (query,content)
 
     @decorator_extract
-    def extract(self, data_id=None):
+    def extract(self, data_id=None, key=None, parameter1=None, parameter2=None):
 
         """
                 This function is used to extract data from the SQL DB.
@@ -104,9 +104,9 @@ class SQL_object(SQL_abstract):
         else:
             default = None
         content = []
-        input = [default]
+        input = [default, key, parameter1, parameter2]
 
-        input_strings = [" data_id LIKE %s", " and key = %s"]
+        input_strings = [" data_id LIKE %s", " and key = %s", "and parameter1 = %s", "and parameter2 = %s"]
         query = 'SELECT * FROM ' + self.TABLE_NAME + ' WHERE'
         val = True
         for i, j in enumerate(input):
@@ -130,6 +130,8 @@ class SQL_object(SQL_abstract):
 
         data.key = [row[0] for row in raw]
         data.data_id = [row[1] for row in raw]
+        data.parameter1 = [row[2] for row in raw]
+        data.parameter2 = [row[3] for row in raw]
 
         return data
 
